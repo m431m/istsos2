@@ -720,7 +720,7 @@ class Observation:
         sqlObsPro = "SELECT id_pro, id_opr, name_opr, def_opr, name_uom FROM %s.observed_properties, %s.proc_obs, %s.uoms" %(filter.sosConfig.schema,filter.sosConfig.schema,filter.sosConfig.schema)
         sqlObsPro += " WHERE id_opr_fk=id_opr AND id_uom_fk=id_uom AND id_prc_fk=%s" %(row["id_prc"])
         sqlObsPro += " AND ("
-        sqlObsPro += " OR ".join(["def_opr SIMILAR TO '%(:|)" + str(i) + "(:|)%'" for i in filter.observedProperty])
+        sqlObsPro += " OR ".join(["def_opr ~ '(((\w*\:+)+)|^)" + str(i).strip() + "$'" for i in filter.observedProperty])
         sqlObsPro += " ) ORDER BY id_pro ASC"
         try:
             obspr_res = pgdb.select(sqlObsPro)
@@ -1091,7 +1091,7 @@ class GetObservationResponse:
             opr_sel = "SELECT def_opr FROM %s.observed_properties WHERE " %(filter.sosConfig.schema,)
             opr_sel_w = []
             for op in filter.observedProperty:
-                opr_sel_w += ["def_opr SIMILAR TO '%%(:|)%s(:|)%%'" %(op)]
+                opr_sel_w += ["def_opr ~ '(((\w*\:+)+)|^)%s$'" % op]
 
             opr_sel = opr_sel + " OR ".join(opr_sel_w)
             try:
