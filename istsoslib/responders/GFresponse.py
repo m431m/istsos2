@@ -57,7 +57,7 @@ class foi:
         self.geom=""
         
         #select foi
-        sql  = "SELECT id_foi, name_foi, desc_foi, ST_AsGml(ST_Transform(geom_foi,%s)) as geom, name_fty" #%(filter.srsName)
+        sql  = "SELECT id_foi, name_foi, desc_foi, ST_AsGml(3, ST_Transform(geom_foi,%s), 6, 17) as geom, name_fty" #%(filter.srsName)
         sql += " FROM %s.foi, %s.feature_type" %(filter.sosConfig.schema,filter.sosConfig.schema)
         sql += " WHERE id_fty_fk=id_fty AND name_foi=%s" #%(filter.featureOfInterest)
         params = (filter.srsName,str(filter.featureOfInterest))

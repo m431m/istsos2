@@ -694,7 +694,7 @@ class Observation:
         """get data according to request filters"""
 
         # SET FOI OF PROCEDURE
-        sqlFoi  = "SELECT name_fty, name_foi, ST_AsGml(ST_Transform(geom_foi,%s)) as gml, st_x(geom_foi) as x, st_y(geom_foi) as y " %(filter.srsName)
+        sqlFoi  = "SELECT name_fty, name_foi, ST_AsGml(3, ST_Transform(geom_foi,%s), 6, 17) as gml, st_x(geom_foi) as x, st_y(geom_foi) as y " %(filter.srsName)
         sqlFoi += " FROM %s.procedures, %s.foi, %s.feature_type" %(filter.sosConfig.schema,filter.sosConfig.schema,filter.sosConfig.schema)
         sqlFoi += " WHERE id_foi_fk=id_foi AND id_fty_fk=id_fty AND id_prc=%s" %(row["id_prc"])
         try:
